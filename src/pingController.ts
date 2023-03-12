@@ -6,4 +6,9 @@ export class PingController {
   ping() {
     return 'Pong!'
   }
+
+  @Get('devops')
+  devOps() {
+    return 'Devops Pong!'
+  }
 }

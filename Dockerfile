@@ -1,27 +1,28 @@
-ARG NODE_VERSION=18.15.0
-
-# First step: build image
-FROM node:${NODE_VERSION} as build
+# Base image
+FROM node:18.15.0-alpine AS base
 
 WORKDIR /app
 
+# Install production dependencies
 COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile --production=true --silent && \
+    yarn cache clean --force
 
-RUN yarn install --only=dev
+# Build image
+FROM base AS build
 
+# Install dev dependencies
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile --silent && \
+    yarn cache clean --force
+
+# Build application
 COPY . .
-
 RUN yarn build
 
-# First step: build image
-FROM node:${NODE_VERSION} as runtime
-
-WORKDIR /app 
+# Runtime image
+FROM base AS runtime
 
 COPY --from=build /app/dist /app
 
-COPY package.json yarn.lock ./
-
-RUN yarn install --production
-
-CMD ["yarn", "start:prod"]
+CMD ["node", "main"]
