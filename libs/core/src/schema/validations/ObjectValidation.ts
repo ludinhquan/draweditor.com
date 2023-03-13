@@ -1,4 +1,4 @@
-import {isEmpty, isObject} from "@iot-platforms/common";
+import {isEmpty, isObject} from "../../common";
 import {AttributeProp} from "../Attribute";
 import {ObjectOptions, ValidateFunction, ValidationError, ValidationKeys, ValidationResult} from "../interfaces";
 import {Validation} from "../Validation";

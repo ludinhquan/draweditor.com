@@ -2,7 +2,7 @@ import {Result} from "../common";
 import {DataModel, DataModelProp} from "./DataModel";
 
 export class DomainModel {
-  static create(tenantId: string, modelConfigs: DataModelProp[]): Result<DataModel[]> {
+  static create(modelConfigs: DataModelProp[], tenantId?: string): Result<DataModel[]> {
     const results: Result<DataModel>[] = modelConfigs
       .map((prop) => DataModel.create({...prop, tenantId}))
 

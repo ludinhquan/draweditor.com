@@ -1,4 +1,4 @@
-import {isEmpty} from "@iot-platforms/common";
+import {isEmpty} from "@draweditor.com/core";
 import {AttributeProp} from "../Attribute";
 import {ValidateFunction, ValidationError, ValidationKeys, ValidationOptions, ValidationResult} from "../interfaces";
 import {Validation} from "../Validation";

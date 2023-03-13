@@ -1,5 +1,4 @@
-import {isNullOrUndefined, Logger} from "@iot-platforms/common";
-import {Result} from "@iot-platforms/core";
+import {isNullOrUndefined, Result} from "@draweditor.com/core";
 import {AttributeProp} from "../Attribute";
 import {ValidateFunction, ValidationError, ValidationKeys, ValidationOptions} from "../interfaces";
 
@@ -23,7 +22,7 @@ export abstract class AbstractValidation<T extends ValidationOptions> {
 
   protected validateRule(rule: string, data: unknown): string[] {
     if (!(rule in this.validations)) {
-      Logger.error(`Please implement "${rule}" validation for ${this.key}`, this.constructor.name)
+      // Logger.error(`Please implement "${rule}" validation for ${this.key}`, this.constructor.name)
       return []
     }
     const validate = this.validations[rule];
