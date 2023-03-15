@@ -25,4 +25,4 @@ FROM base AS runtime
 
 COPY --from=build /app/dist /app
 
-CMD ["node", "main"]
+CMD ["node", "src/main"]

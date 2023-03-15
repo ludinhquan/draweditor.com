@@ -23,8 +23,8 @@ spec:
     spec:
       containers:
         - name: api-service
-          image: 835051308318.dkr.ecr.ap-northeast-1.amazonaws.com/draweditor:latest
-          imagePullPolicy: Always
+          image: draweditor:latest
+          imagePullPolicy: Never
           ports:
             - name: http
               containerPort: 3000
