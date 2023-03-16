@@ -23,6 +23,12 @@
       ],
       "@draweditor.com/core/*": [
         "libs/core/src/*"
+      ],
+      "@draweditor.com/event-bus": [
+        "libs/event-bus/src"
+      ],
+      "@draweditor.com/event-bus/*": [
+        "libs/event-bus/src/*"
       ]
     }
   }

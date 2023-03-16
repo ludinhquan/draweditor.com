@@ -1,4 +1,5 @@
 import {Either, InternalServerError, IUseCase, Result, right} from "@draweditor.com/core";
+import {IEventBus} from "@draweditor.com/event-bus";
 import {UseCaseErrors} from "../useCaseError";
 
 export type CreateResponse = Either<
@@ -16,7 +17,7 @@ export type CreateCommand = {
 
 export class CreateUseCase implements IUseCase<CreateCommand, CreateResponse> {
   constructor(
-    // private eventBus: IEventBus
+    private eventBus: IEventBus
   ) {}
 
   async execute(command: CreateCommand): Promise<CreateResponse> {
