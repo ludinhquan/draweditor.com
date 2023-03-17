@@ -24,11 +24,17 @@
       "@draweditor.com/core/*": [
         "libs/core/src/*"
       ],
-      "@draweditor.com/event-bus": [
-        "libs/event-bus/src"
+      "@draweditor.com/eventBus": [
+        "libs/eventBus/src"
       ],
-      "@draweditor.com/event-bus/*": [
-        "libs/event-bus/src/*"
+      "@draweditor.com/eventBus/*": [
+        "libs/eventBus/src/*"
+      ],
+      "@draweditor.com/logger": [
+        "libs/logger/src"
+      ],
+      "@draweditor.com/logger/*": [
+        "libs/logger/src/*"
       ]
     }
   }

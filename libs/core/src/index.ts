@@ -1,4 +1,5 @@
 export * from './common'
+export * from './decorator'
 export * from './domain'
 export * from './errors'
 export * from './schema'

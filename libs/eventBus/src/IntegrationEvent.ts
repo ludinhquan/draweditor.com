@@ -1,5 +1,5 @@
 export abstract class IntegrationEvent<T = unknown> {
-  public readonly organizationId: string;
+  public readonly tenantId: string;
 
   /** Aggregate ID where domain event occurred */
   public readonly aggregateId: string;
@@ -15,11 +15,11 @@ export abstract class IntegrationEvent<T = unknown> {
   public readonly data: T
 
   constructor(props: IntegrationEvent<T>) {
-    if (!props.organizationId) throw new Error("Missing organizationId");
+    if (!props.tenantId) throw new Error("Missing tenantId");
     if (!props.aggregateId) throw new Error("Missing aggregateId");
     if (!props.data) throw new Error("Missing data");
 
-    this.organizationId = props.organizationId;
+    this.tenantId = props.tenantId;
     this.aggregateId = props.aggregateId;
     this.correlationId = props.correlationId;
     this.dateOccurred = new Date();
@@ -28,7 +28,7 @@ export abstract class IntegrationEvent<T = unknown> {
 
   public toString(): string {
     return JSON.stringify({
-      organizationId: this.organizationId,
+      organizationId: this.tenantId,
       aggregateId: this.aggregateId,
       correlationId: this.correlationId,
       dateOccurred: this.dateOccurred,

@@ -1,5 +1,5 @@
 import {Either, InternalServerError, IUseCase, Result, right} from "@draweditor.com/core";
-import {IEventBus} from "@draweditor.com/event-bus";
+import {IEventBus} from "@draweditor.com/eventBus";
 import {UseCaseErrors} from "../useCaseError";
 
 export type CreateResponse = Either<
