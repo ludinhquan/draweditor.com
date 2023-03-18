@@ -33,6 +33,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/logger/tsconfig.lib.json"
       }
+    },
+    "dataAccess": {
+      "type": "library",
+      "root": "libs/dataAccess",
+      "entryFile": "index",
+      "sourceRoot": "libs/dataAccess/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/dataAccess/tsconfig.lib.json"
+      }
     }
   }
 }

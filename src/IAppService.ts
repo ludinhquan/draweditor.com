@@ -1,5 +1,6 @@
 export const AppService = Symbol('AppService')
 
 export interface IAppService {
-  registerSchemas(): void
+  register(): Promise<void>
+  destroy(): Promise<void>
 }

@@ -35,6 +35,12 @@
       ],
       "@draweditor.com/logger/*": [
         "libs/logger/src/*"
+      ],
+      "@draweditor.com/dataAccess": [
+        "libs/dataAccess/src"
+      ],
+      "@draweditor.com/dataAccess/*": [
+        "libs/dataAccess/src/*"
       ]
     }
   }

@@ -10,8 +10,10 @@ export class RabbitMQEventBus implements IEventBus {
   constructor(
     private url: string,
     private logger: ILogger
-  ) {
-    this.getConnection()
+  ) {}
+
+  async register(): Promise<void> {
+    await this.getConnection()
   }
 
   @mutex()
