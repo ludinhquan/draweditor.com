@@ -1,3 +1,4 @@
+import {DataSource, IDataSource} from "@draweditor.com/dataAccess";
 import {EventBus, IEventBus} from "@draweditor.com/eventBus";
 import {Module} from "@nestjs/common";
 import {CreateUseCase} from "./createUseCase";
@@ -6,10 +7,10 @@ import {CreateUseCase} from "./createUseCase";
   providers: [
     {
       provide: CreateUseCase,
-      useFactory(eventBus: IEventBus) {
-        return new CreateUseCase(eventBus)
+      useFactory(eventBus: IEventBus, dataSource: IDataSource) {
+        return new CreateUseCase(eventBus, dataSource)
       },
-      inject: [EventBus]
+      inject: [EventBus, DataSource]
     }
   ]
 })

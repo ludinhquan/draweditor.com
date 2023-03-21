@@ -1,4 +1,5 @@
 import {Either, InternalServerError, IUseCase, Result, right} from "@draweditor.com/core";
+import {IDataSource} from "@draweditor.com/dataAccess";
 import {IEventBus} from "@draweditor.com/eventBus";
 import {UseCaseErrors} from "../useCaseError";
 
@@ -17,10 +18,14 @@ export type CreateCommand = {
 
 export class CreateUseCase implements IUseCase<CreateCommand, CreateResponse> {
   constructor(
-    private eventBus: IEventBus
+    private eventBus: IEventBus,
+    private dataSource: IDataSource
   ) {}
 
   async execute(command: CreateCommand): Promise<CreateResponse> {
+    const repository = await this.dataSource.getRepository();
+
+    // this.repository.findById();
     return right(Result.ok())
   }
 }

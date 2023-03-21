@@ -1,2 +1,2 @@
-export * from './IRepository'
+export * from './IDataSource'
 export * from './implementations'

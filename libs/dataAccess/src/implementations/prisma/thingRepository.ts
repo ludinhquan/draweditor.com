@@ -1,8 +1,9 @@
 import {EntityData, Result} from "@draweditor.com/core";
+import {PrismaClient} from "@prisma/client";
 import { FindManyArgs, FindManyResult, IRepository } from "../../IRepository";
 
 export class ThingRepository implements IRepository {
-  constructor(){}
+  constructor(private prismaClient: PrismaClient){}
 
   findById(entityData: EntityData): Promise<Result<EntityData>> {
     throw new Error('Please implements findById method')
