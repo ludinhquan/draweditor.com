@@ -1,0 +1,28 @@
+mongodb:
+  enabled: true
+  architecture: replicaset
+  replicaCount: 3
+  image:
+    tag: 6.0.5
+  replicaSetName: rs0
+  auth:
+    enabled: true
+    rootUser: root
+    rootPassword: root
+    replicaSetKey: abcdev
+    usernames:
+      - admin
+    passwords:
+      - dev
+    databases:
+      - staging
+  arbiter:
+    enabled: false
+  # externalAccess:
+  #   enabled: true
+  #   service: 
+  #     type: NodePort
+  #     nodePorts: 
+  #       - 30017
+  #       - 30018
+  #       - 30019
