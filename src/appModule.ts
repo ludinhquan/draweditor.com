@@ -1,8 +1,8 @@
 import {Inject, Module, OnApplicationBootstrap, OnApplicationShutdown} from '@nestjs/common';
-import {AppServiceImpl} from './AppServiceImpl';
+import {AppServiceImpl} from './appService';
 import {CoreModule} from './core';
 import {AppService, IAppService} from './IAppService';
-import {PingController} from './PingController';
+import {PingController} from './pingController';
 
 @Module({
   imports: [

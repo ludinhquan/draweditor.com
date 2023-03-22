@@ -1,6 +1,6 @@
 import {Logger} from '@draweditor.com/logger';
 import {NestFactory} from '@nestjs/core';
-import {AppModule} from './AppModule';
+import {AppModule} from './appModule';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
