@@ -1,3 +1,5 @@
+export * from './interfaces'
 export * from './DomainModel'
 export * from './DataModel'
+export * from './Relation'
 export * from './EntityData'

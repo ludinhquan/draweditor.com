@@ -7,25 +7,19 @@ import {RelationType} from "./Relation";
 
 type UniqueKeys = (string | string[])[]
 
-export enum ModelType {
-  Configuration = 'configuration',
-  Category = 'category',
-  DataModel = 'dataModel',
+export enum Domain {
+  Auth = 'auth',
 }
 
 export enum Model {
-  DataModel = 'dataModel',
-  Attribute = 'attribute',
-  Ward = 'ward',
-  District = 'district',
-  Province = 'province',
+  User = 'user'
 }
 
 export type DataModelProp = {
   tenantId?: string,
   key: string,
   name: string,
-  type: ModelType,
+  domain: Domain,
   attributes?: AttributeProp[],
   uniques?: UniqueKeys
 }
@@ -47,7 +41,7 @@ export class DataModel extends Entity<DataModelProp>{
 
   get key() {return this.props.key}
 
-  get type() {return this.props.type}
+  get type() {return this.props.domain}
 
   get attributes() {return [...this.#attributes].map(item => item[1])}
 

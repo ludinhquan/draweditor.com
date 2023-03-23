@@ -1,10 +1,8 @@
 import {Module} from "@nestjs/common";
 
-const useCaseModule = [
-]
+const useCaseModule = []
 
-const exportUseCases = [
-]
+const exportUseCases = []
 
 @Module({
   imports: [...useCaseModule],

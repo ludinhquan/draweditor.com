@@ -5,7 +5,7 @@ import {UseCaseErrors} from "../useCaseError";
 
 export type CreateResponse = Either<
   UseCaseErrors.SchemaNotFound |
-  UseCaseErrors.ValidationError |
+  UseCaseErrors.BadRequest |
   UseCaseErrors.ResourceAlreadyExist |
   InternalServerError,
   Result<{id: string}>
