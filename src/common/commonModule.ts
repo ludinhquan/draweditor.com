@@ -12,4 +12,4 @@ import {LoggerModule} from "./logger";
     ConfigModule.forRoot({envFilePath: '.env', isGlobal: true}),
   ],
 })
-export class CoreModule {}
+export class CommonModule {}
