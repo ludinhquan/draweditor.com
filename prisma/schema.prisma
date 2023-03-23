@@ -7,3 +7,11 @@ datasource db {
   url      = env("MONGODB_URL")
 }
 
+model user {
+  username String
+  password String?
+  id       String  @id @map("_id")
+
+  @@unique([username])
+  @@map("auth.user")
+}
