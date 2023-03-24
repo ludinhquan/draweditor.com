@@ -15,7 +15,7 @@ export class GenerateConsole {
     if (modelResult.isFailure) throw new Error(modelResult.getError());
 
     const models = modelResult.getValue();
-    const schema = await this.prismaService.generateSchema(models);
+    const schema = await this.prismaService.generateClient(models);
 
     console.log(schema);
   }

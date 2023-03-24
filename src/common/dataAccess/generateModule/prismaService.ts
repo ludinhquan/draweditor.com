@@ -45,24 +45,27 @@ export class PrismaService {
   }
 
   private parseModelFields(dataModel: DataModel) {
-    const attributes = dataModel.attributes.map(
-      (attribute: Attribute) => {
-        const hasMany = [RelationType.ManyToMany, RelationType.ManyToOne].includes(attribute.relation?.type);
-        const optional = attribute.rules.required || attribute.primary || hasMany ? '' : '?';
-        const id = attribute.primary ? ' @id @map("_id")' : '';
-        const defaultValue = attribute.default !== undefined ? ` @default(${attribute.default})` : '';
-        const type = attribute.relation ? this.parseRelationType(attribute) : this.dataTypes[attribute.type];
-        const relation = this.parseRelation(attribute);
-        return `  ${attribute.key} ${type}${optional}${id}${defaultValue}${relation}`;
-      }
-    );
+    const id = '  id String @id @map("_id")';
+
+    const attributes = dataModel.attributes
+      .filter(attribute => !attribute.primary)
+      .map(
+        (attribute: Attribute) => {
+          const hasMany = [RelationType.ManyToMany, RelationType.ManyToOne].includes(attribute.relation?.type);
+          const optional = attribute.rules.required || attribute.primary || hasMany ? '' : '?';
+          const defaultValue = attribute.default !== undefined ? ` @default(${attribute.default})` : '';
+          const type = attribute.relation ? this.parseRelationType(attribute) : this.dataTypes[attribute.type];
+          const relation = this.parseRelation(attribute);
+          return `  ${attribute.key} ${type}${optional}${defaultValue}${relation}`;
+        }
+      );
 
     const uniques = dataModel.uniques.map(
       (fields: string | string[]) => `  @@unique([${fields}])`
     );
 
     const modelName = `  @@map("${dataModel.persitentName}")`;
-    return [...attributes, ...uniques, modelName].filter(Boolean)
+    return [id, ...attributes, ...uniques, modelName].filter(Boolean)
   };  
 
   private parseModel(dataModel: DataModel): string {
@@ -73,16 +76,16 @@ export class PrismaService {
   private async formatSchema(schemaPath: string) {
     const formatResult = await executeCommand(`npx prisma format --schema=${schemaPath}`);
     if (formatResult.error) throw formatResult.error;
-    console.log(formatResult.result)
+    console.debug(formatResult.result)
   }
   
-  public async generateClient(schemaPath: string) {
+  private async generate(schemaPath: string) {
     const generateResult = await executeCommand(`npx prisma generate --schema=${schemaPath}`);
     if (generateResult.error) throw generateResult.error;
-    console.log(generateResult.result)
+    console.debug(generateResult.result)
   }
 
-  public async generateSchema(dataModels: DataModel[], options?: GenerateOptions) {
+  public async generateClient(dataModels: DataModel[], options?: GenerateOptions) {
     const {dataSource, client, schemaPath = 'prisma/schema.prisma'} = options ?? {};
     const output = client?.output ?? null;
     const provider = dataSource?.provider ?? 'mongodb';
@@ -106,7 +109,10 @@ export class PrismaService {
 
     const schemaContent = [clientGenerator, dataSourceDB, models].join('\n\n');
     await writeFile(schemaPath, schemaContent);
-    await this.formatSchema(schemaPath);
+    await Promise.all([
+      await this.formatSchema(schemaPath),
+      await this.generate(schemaPath)
+    ])
     return schemaContent;
   }
 }
