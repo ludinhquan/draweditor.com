@@ -1,4 +1,4 @@
-import {EntityDataProps, NotFoundError, BadRequestError, ConflictError} from "@draweditor.com/core";
+import {EntityDataProp, NotFoundError, BadRequestError, ConflictError} from "@draweditor.com/core";
 
 export namespace UseCaseErrors {
   export class BadRequest extends BadRequestError {}
@@ -13,7 +13,7 @@ export namespace UseCaseErrors {
   export class ResourceNotFound extends NotFoundError {}
 
   export class ResourceAlreadyExist extends ConflictError {
-    constructor(data: Partial<EntityDataProps>[]) {
+    constructor(data: Partial<EntityDataProp>[]) {
       super(`Resource already exist`, data);
     }
   }

@@ -3,7 +3,6 @@ import {Entity, UniqueEntityId, UuidEntityId} from "../domain";
 import {DataModel} from "./DataModel";
 import {ValidationResult} from "./interfaces";
 
-type Data = {id?: string} & object
 type RelationData = Record<string, EntityData[]>
 
 export type Options = Partial<{
@@ -12,12 +11,14 @@ export type Options = Partial<{
   action: 'create' | 'edit' | 'connect'
 }>
 
-export type EntityDataProps = {
+type Data<T = unknown> = Partial<{id: string}> & T
+
+export type EntityDataProp<T = any> = {
   model: DataModel,
-  data: Data,
+  data: Data<T>,
 }
 
-export class EntityData extends Entity<EntityDataProps>{
+export class EntityData<T = unknown> extends Entity<EntityDataProp<T>>{
   #relations: RelationData
   public readonly isEditing: boolean
   public readonly isCreating: boolean
@@ -38,7 +39,7 @@ export class EntityData extends Entity<EntityDataProps>{
     return values
   }
 
-  private constructor(props: EntityDataProps, id: UniqueEntityId, action: Options['action']) {
+  constructor(props: EntityDataProp, id: UniqueEntityId, action: Options['action']) {
     super(props, id)
     this.isEditing = action === 'edit'
     this.isCreating = action === 'create'
@@ -49,7 +50,7 @@ export class EntityData extends Entity<EntityDataProps>{
     this.#relations = relationData
   }
 
-  public getDuplicateValues(data: Data): Partial<Data>[] {
+  public getDuplicateValues(data: EntityDataProp['data']): Partial<EntityDataProp['data']>[] {
     const {uniques} = this.model
     const duplicate = uniques
       .map(key => {
@@ -62,7 +63,7 @@ export class EntityData extends Entity<EntityDataProps>{
     return duplicate
   }
 
-  static create(props: EntityDataProps, options?: Options): Result<EntityData> {
+  static create(props: EntityDataProp, options?: Options): Result<EntityData> {
     const {model, data} = props
     const idResult = UuidEntityId.create(data.id);
     if (idResult.isFailure) return Result.fail(`ID ${data.id} is invalid format UUID`);
