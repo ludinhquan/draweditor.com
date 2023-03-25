@@ -8,7 +8,7 @@ export interface UniqueEntityId {
 }
 
 // Define the UuidEntityId class as a concrete implementation of UniqueEntityId
-export class UuidEntityId implements UniqueEntityId {
+export class UUIDEntityId implements UniqueEntityId {
   readonly #value: string;
 
   private constructor(id?: string) {
@@ -20,7 +20,7 @@ export class UuidEntityId implements UniqueEntityId {
   }
 
   public equals(id: UniqueEntityId): boolean {
-    if (!(id instanceof UuidEntityId)) {
+    if (!(id instanceof UUIDEntityId)) {
       return false;
     }
 
@@ -28,9 +28,9 @@ export class UuidEntityId implements UniqueEntityId {
   }
 
   static create(id?: string): Result<UniqueEntityId> {
-    if (!id) return Result.ok(new UuidEntityId());
+    if (!id) return Result.ok(new UUIDEntityId());
 
-    if (id && validate(id)) return Result.ok(new UuidEntityId(id));
+    if (id && validate(id)) return Result.ok(new UUIDEntityId(id));
 
     return Result.fail(`Invalid uuid ${id}`);
   }

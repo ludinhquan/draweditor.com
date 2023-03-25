@@ -1,7 +1,7 @@
 import {Result} from "../common";
-import {Entity, UniqueEntityId, UuidEntityId} from "../domain";
+import {Entity, UniqueEntityId, UUIDEntityId} from "../domain";
 import {Attribute, AttributeProp} from "./Attribute";
-import {Options} from "./EntityData";
+import {EntityAction, Options} from "./EntityData";
 import {AttributeType, ValidationResult} from "./interfaces";
 import {RelationType} from "./Relation";
 
@@ -59,8 +59,8 @@ export class DataModel extends Entity<DataModelProp>{
     // don't validate relation attribute when it's references data
     if (relation && attribute.isRef) return [];
 
-    if (!attribute.updatable && action === "edit") return [`"${attribute.key}" is only allowed to be created and cannot be updated`]
-    if (!attribute.creatable && action === "create") return [`"${attribute.key}" is read-only and cannot be updated.`]
+    if (!attribute.updatable && action === EntityAction.Update) return [`"${attribute.key}" is only allowed to be created and cannot be updated`]
+    if (!attribute.creatable && action === EntityAction.Create) return [`"${attribute.key}" is read-only and cannot be created.`]
 
     const errors = attribute.validate(data[attribute.key]);
 
@@ -72,7 +72,7 @@ export class DataModel extends Entity<DataModelProp>{
     const keySet = new Set(Object.keys(data ?? {}));
 
     let attributes = this.dataAttributes;
-    if (action === 'edit') attributes = attributes.filter(attribute => keySet.has(attribute.key))
+    if (action === EntityAction.Update) attributes = attributes.filter(attribute => keySet.has(attribute.key))
 
     const validateResult = attributes
       .reduce(
@@ -110,7 +110,7 @@ export class DataModel extends Entity<DataModelProp>{
     });
 
     const modelProps: DataModelProp = props
-    const uniqueId = UuidEntityId.create(id).getValue();
+    const uniqueId = UUIDEntityId.create(id).getValue();
     const model = new DataModel(modelProps, uniqueId);
 
     if (!attributeMap.has('id')) attributeMap.set('id', Attribute.generateId());

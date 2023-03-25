@@ -1,4 +1,4 @@
-import {EntityData, Result} from "@draweditor.com/core"
+import {EntityData} from "@draweditor.com/core"
 
 export interface IUser {
   id: string
@@ -9,17 +9,11 @@ export interface IUser {
 
 export type UserProp = Partial<IUser>
 
-export class User {
-  public readonly data: EntityData<IUser>
+export class User extends EntityData<UserProp> {
+  private isAdmin: boolean
 
-  private constructor() {}
-
-  static create(prop: UserProp, id?: string): Result<User> {
-    // return EntityData.create({
-    //   // model: 
-    //   data: prop
-    // })
-
-    return Result.ok()
+  markIsAdmin() {
+    this.isAdmin = true
   }
 }
+

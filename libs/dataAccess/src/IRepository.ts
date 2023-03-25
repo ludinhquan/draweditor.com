@@ -33,7 +33,7 @@ export interface IRepository {
 
   findMany(args: FindManyArgs): Promise<FindManyResult>
 
-  create(entityData: EntityData): Promise<Result<EntityData>>
+  create(entityData: any): Promise<Result<EntityData>>
 
   update(entityData: EntityData): Promise<Result<EntityData>>
 

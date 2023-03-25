@@ -6,10 +6,15 @@ export const user: DataModelProp = {
   domain: Domain.Auth,
   attributes: [
     {
-      key: "username",
-      name: "Username",
+      key: "email",
+      name: "Email",
       type: AttributeType.String,
-      rules: {required: true, pattern: "^[a-zA-Z0-9_]*$"},
+      rules: {required: true},
+    },
+    {
+      key: "name",
+      name: "name",
+      type: AttributeType.String,
     },
     {
       key: "password",
@@ -19,6 +24,6 @@ export const user: DataModelProp = {
     },
   ],
   uniques: [
-    ['username']
+    ['email']
   ]
 };

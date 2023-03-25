@@ -1,5 +1,5 @@
+import {IUserService} from "@/modules/users";
 import {Result} from "@draweditor.com/core";
-import {IUserService} from "@modules/users";
 import {RegisterDto} from "./authenticationDto";
 import {Password} from "./domain/password";
 
@@ -17,7 +17,7 @@ export class AuthenticationService {
       password: hashedPassword
     });
 
-    if(createResult.isFailure) return createResult
+    if (createResult.isFailure) return createResult
 
     return Result.ok(createResult.getValue())
   }

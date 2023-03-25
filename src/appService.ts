@@ -4,10 +4,10 @@ import {Inject} from "@nestjs/common";
 import {IAppService} from "./IAppService";
 import * as schemas from './schemas';
 
-export class AppServiceImpl implements IAppService{
+export class AppServiceImpl implements IAppService {
   constructor(
     @Inject(EventBus) private eventBus: IEventBus
-  ){}
+  ) {}
 
   async register() {
     DomainModel.create(Object.values(schemas));
@@ -17,7 +17,7 @@ export class AppServiceImpl implements IAppService{
     ])
   }
 
-  async destroy(){
+  async destroy() {
     await Promise.all([
       this.eventBus.destroy()
     ])

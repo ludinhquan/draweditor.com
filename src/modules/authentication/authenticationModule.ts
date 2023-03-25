@@ -1,9 +1,10 @@
-import {IUserService, UserService} from "@modules/users";
+import {IUserService, UserModule, UserService} from "@/modules/users";
 import {Module} from "@nestjs/common";
 import {AuthenticationController} from "./authenticationController";
 import {AuthenticationService} from "./authenticationService";
 
 @Module({
+  imports: [UserModule],
   providers: [
     {
       provide: AuthenticationService,

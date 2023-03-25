@@ -17,10 +17,8 @@ export class AuthenticationController {
 
   @Post('register')
   async register(@Body() registrationData: RegisterDto) {
-    const user = await this.authenticationService.register(registrationData);
-    // await this.emailConfirmationService.sendVerificationLink(
-    //   registrationData.email,
-    // );
-    // return user;
+    const result = await this.authenticationService.register(registrationData);
+
+    return result.getValue();
   }
 }
