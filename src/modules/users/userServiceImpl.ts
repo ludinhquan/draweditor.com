@@ -37,7 +37,7 @@ export class UserServiceImpl implements IUserService {
 
     const oldUser = await userRepository.findUnique(user);
     const existed = !!oldUser
-    if(!!existed) 
+    if (!!existed)
       return left(new UserError.UserAlreadyExists(`User with email ${createUserDto.email} already exists`))
 
     const data = await userRepository.create<User>(user);

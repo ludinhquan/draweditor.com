@@ -1,3 +1,4 @@
+import {omit} from "@draweditor.com/core";
 import {Body, Controller, Post, Req, UseGuards} from "@nestjs/common";
 import {Request} from "express";
 import {AuthenticationService} from "./authenticationService";
@@ -33,6 +34,6 @@ export class AuthenticationController {
     const accessToken = this.authenticationService.getCookieWithJwtAccessToken(user);
     req.res.setHeader('Set-Cookie', [accessToken]);
 
-    return user
+    return omit(user, ['password']);
   }
 }

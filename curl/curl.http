@@ -2,14 +2,14 @@ POST {{HOST_DEV}}/authentication/register
 content-type: application/json
 
 {
-  "email": "ludinhquan@gmail.com",
-  "password": "dev"
+  "email": "test@gmail.com",
+  "password": "dev1"
 }
 
 POST {{HOST_DEV}}/authentication/login
 content-type: application/json
 
 {
-  "email": "ludinhquan@gmail.com",
-  "password": "dev"
+  "email": "test@gmail.com",
+  "password": "dev1"
 }

@@ -54,8 +54,7 @@ export class HttpInterceptor implements NestInterceptor {
 
     return handler.handle().pipe(
       map((data: any) => {
-        if (data instanceof CustomError)
-          throw new HttpException(data, data.statusCode, {cause: data});
+        if (data instanceof CustomError) throw data
         return data;
       }),
     );
