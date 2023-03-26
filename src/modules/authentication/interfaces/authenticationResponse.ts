@@ -3,6 +3,6 @@ import { AuthenticationErrors } from "./authenticationError";
 
 
 export type AuthenticationResponse = Either<
-  AuthenticationErrors.WrongCredentialProvied,
+  AuthenticationErrors.WrongCredentialProvided,
   Result<void>
 >

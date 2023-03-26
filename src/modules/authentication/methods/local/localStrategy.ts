@@ -15,7 +15,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   async validate(email: string, password: string): Promise<IUser> {
     const result = await this.authenticationService.getAuthenticatedUser(email, password);
 
-    if (result.isFailure) throw new AuthenticationErrors.WrongCredentialProvied(result.getError());
+    if (result.isFailure) throw new AuthenticationErrors.WrongCredentialProvided(result.getError());
 
     return result.getValue()
   }

@@ -1,5 +1,5 @@
 import {UnauthorizedError} from "@draweditor.com/core";
 
 export namespace AuthenticationErrors {
-  export class WrongCredentialProvied extends UnauthorizedError {}
+  export class WrongCredentialProvided extends UnauthorizedError {}
 }
