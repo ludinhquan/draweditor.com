@@ -64,3 +64,46 @@ export function compare(a: unknown, b: any): boolean {
   if (a === b) return true;
   return JSON.stringify(a) === JSON.stringify(b);
 }
+
+type ExcludeValueType = null | undefined | '' | {} | [] | number | string;
+
+export function removeEmptyProps<T>(
+  item: T,
+  excludeValue: ExcludeValueType | ExcludeValueType[] = [
+    null,
+    undefined,
+    '',
+    {},
+    [],
+  ],
+  recursive = true,
+): T {
+  const excludeValues = Array.isArray(excludeValue)
+    ? excludeValue
+    : [excludeValue];
+
+  const removeEmptyArray = excludeValues.some((item) => isEmptyArray(item));
+  const removeEmptyObject = excludeValues.some((item) => isEmptyObject(item));
+
+  const excludeSet = new Set(excludeValues);
+
+  const filtered: any = {};
+  for (const key of Object.keys(item)) {
+    if (isObject(item[key]))
+      item[key] = removeEmptyProps(item[key], excludeValues, recursive);
+    if (excludeSet.has(item[key])) continue;
+    if (removeEmptyArray && isEmptyArray(item[key])) continue;
+    if (removeEmptyObject && isEmptyObject(item[key])) continue;
+    filtered[key] = item[key];
+  }
+
+  return filtered;
+}
+
+function isEmptyArray(item: any) {
+  return Array.isArray(item) && item.length === 0;
+}
+
+function isEmptyObject(item: any) {
+  return isObject(item) && Object.keys(item).length === 0;
+}

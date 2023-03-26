@@ -47,6 +47,12 @@
       ],
       "@draweditor.com/dataAccess/*": [
         "libs/dataAccess/src/*"
+      ],
+      "@draweditor.com/common": [
+        "libs/common/src"
+      ],
+      "@draweditor.com/common/*": [
+        "libs/common/src/*"
       ]
     }
   }

@@ -4,7 +4,7 @@ import {UserError} from "./IUserError";
 
 export type CreateUserResponse = Either<
   UserError.ValidationError |
-  UserError.UserAlreadyExisted |
+  UserError.UserAlreadyExists |
   InternalServerError,
   Result<Partial<IUser>>
 >

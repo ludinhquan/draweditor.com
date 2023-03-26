@@ -1,12 +1,12 @@
-import {Logger} from '@draweditor.com/logger';
+import {HttpExceptionFilter, HttpInterceptor} from '@draweditor.com/common';
 import {NestFactory} from '@nestjs/core';
 import {AppModule} from './appModule';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const logger = await app.resolve(Logger);
 
-  app.useLogger(logger);
+  app.useGlobalFilters(new HttpExceptionFilter())
+  app.useGlobalInterceptors(new HttpInterceptor())
 
   app.enableShutdownHooks()
 
