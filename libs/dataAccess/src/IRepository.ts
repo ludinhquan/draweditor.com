@@ -19,7 +19,7 @@ export type FindManyArgs = {
 
 export type FindDetailArgs = {
   model: DataModel
-  where: {id: string}
+  where: Record<string, any>
   include?: Include
 }
 
@@ -30,6 +30,8 @@ export type FindManyResult = {
 
 export interface IRepository {
   findUnique<T extends EntityData>(entityData: EntityData): Promise<T['data']>
+
+  findDetail<T>(args: FindDetailArgs): Promise<T> 
 
   findById(entityData: EntityData): Promise<Result<EntityData>>
 

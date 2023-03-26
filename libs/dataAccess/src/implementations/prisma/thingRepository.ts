@@ -1,6 +1,6 @@
 import {EntityData, Result} from "@draweditor.com/core";
 import {PrismaClient} from "@prisma/client";
-import {FindManyArgs, FindManyResult, IRepository} from "../../IRepository";
+import {FindDetailArgs, FindManyArgs, FindManyResult, IRepository} from "../../IRepository";
 
 export class ThingRepository implements IRepository {
   constructor(private prismaClient: PrismaClient){}
@@ -17,6 +17,15 @@ export class ThingRepository implements IRepository {
 
     return findResult
   }
+
+  async findDetail<T>(args: FindDetailArgs): Promise<T> {
+    const {where, include, model} = args
+
+    const data = await this.prismaClient[model.key].findUnique({where, include});
+
+    return data
+  }
+
 
   findById(entityData: EntityData): Promise<Result<EntityData>> {
     throw new Error('Please implements findById method')

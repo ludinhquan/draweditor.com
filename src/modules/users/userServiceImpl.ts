@@ -1,6 +1,6 @@
 import {DomainModel, left, Result, right} from "@draweditor.com/core";
 import {IDataSource} from "@draweditor.com/dataAccess";
-import {User} from "./domain";
+import {IUser, User} from "./domain";
 import {CreateUserDto, CreateUserResponse, IUserService, UserError} from "./interfaces";
 
 export class UserServiceImpl implements IUserService {
@@ -8,6 +8,18 @@ export class UserServiceImpl implements IUserService {
     private dataSource: IDataSource,
     private domainModel: DomainModel
   ){}
+
+  async getByEmail(email: string): Promise<IUser | null> {
+    const userRepository = await this.dataSource.getRepository();
+    const model = this.domainModel.getModel('user');
+
+    const user = await userRepository.findDetail<IUser>({
+      model,
+      where: {email}
+    });
+
+    return user;
+  }
 
   async create(createUserDto: CreateUserDto): Promise<CreateUserResponse> {
     const userRepository = await this.dataSource.getRepository();

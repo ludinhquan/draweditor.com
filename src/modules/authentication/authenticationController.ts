@@ -1,5 +1,7 @@
-import {Body, Controller, Post} from "@nestjs/common";
+import {Body, Controller, Post, Req, UseGuards} from "@nestjs/common";
+import {Request} from "express";
 import {AuthenticationService} from "./authenticationService";
+import {LocalAuthenticationGuard} from "./methods";
 
 type RegisterDto = {
   name: string
@@ -21,5 +23,16 @@ export class AuthenticationController {
     if (result.isLeft()) return result.value
 
     return result.value.getValue()
+  }
+
+  @Post('login')
+  @UseGuards(LocalAuthenticationGuard)
+  async login(@Req() req: Request) {
+    const {user} = req
+
+    const accessToken = this.authenticationService.getCookieWithJwtAccessToken(user);
+    req.res.setHeader('Set-Cookie', [accessToken]);
+
+    return user
   }
 }

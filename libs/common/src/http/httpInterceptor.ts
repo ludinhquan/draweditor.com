@@ -30,15 +30,11 @@ export class HttpInterceptor implements NestInterceptor {
 
     const last = performance.now();
 
-    // @ts-ignore
-    const {method, params, body, query, user = {}} = request;
+    const {method, params, body, query, user} = request;
     const requestId = v4();
 
     const client = this.getClient(request);
-    const userInfo = {
-      user: {id: user.id, name: [user.firstName, user.lastName].join(' ')},
-      organization: pick(user.organization, ['id', 'name'])
-    }
+    const userInfo = {user}
 
     this.logger.log(
       `[REQUEST][${requestId}] [${method}] ${client} ${JSON.stringify(

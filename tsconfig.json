@@ -54,6 +54,9 @@
       "@draweditor.com/common/*": [
         "libs/common/src/*"
       ]
-    }
+    },
+    "typeRoots": [
+      "*.d.ts"
+    ]
   }
 }

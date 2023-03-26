@@ -5,3 +5,11 @@ content-type: application/json
   "email": "ludinhquan@gmail.com",
   "password": "dev"
 }
+
+POST {{HOST_DEV}}/authentication/login
+content-type: application/json
+
+{
+  "email": "ludinhquan@gmail.com",
+  "password": "dev"
+}
