@@ -1,7 +1,7 @@
 import {CreateUserResponse, IUser, IUserService} from "@/modules/users";
 import {Either, InternalServerError, Result} from "@draweditor.com/core";
 import {RegisterDto} from "./authenticationDto";
-import {Password} from "./domain";
+import {Jwt, Password} from "./domain";
 import {TokenPayload} from "./interfaces";
 import { JwtService } from "@nestjs/jwt";
 import {ConfigService} from "@nestjs/config";
@@ -15,7 +15,6 @@ type RegistrationResponse = Either<
 export class AuthenticationService {
   constructor(
     private userService: IUserService,
-    private jwtService: JwtService,
     private configService: ConfigService,
   ) {}
 
@@ -44,11 +43,9 @@ export class AuthenticationService {
 
   public getCookieWithJwtAccessToken(user: IUser) {
     const payload: TokenPayload = {userId: user.id};
-    const token = this.jwtService.sign(payload, {
+    const token = Jwt.sign(payload, {
       secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
-      expiresIn: `${this.configService.get(
-        'JWT_ACCESS_TOKEN_EXPIRATION_TIME',
-      )}s`,
+      expiresIn: `${this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}s`,
     });
     return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
       'JWT_ACCESS_TOKEN_EXPIRATION_TIME',
@@ -57,11 +54,9 @@ export class AuthenticationService {
 
   public getCookieWithJwtRefreshToken(user: IUser) {
     const payload: TokenPayload = {userId: user.id};
-    const token = this.jwtService.sign(payload, {
+    const token = Jwt.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
-      expiresIn: `${this.configService.get(
-        'JWT_REFRESH_TOKEN_EXPIRATION_TIME',
-      )}s`,
+      expiresIn: `${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}s`,
     });
     const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
       'JWT_REFRESH_TOKEN_EXPIRATION_TIME',
