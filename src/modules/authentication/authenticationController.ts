@@ -18,7 +18,8 @@ export class AuthenticationController {
   @Post('register')
   async register(@Body() registrationData: RegisterDto) {
     const result = await this.authenticationService.register(registrationData);
+    if (result.isLeft()) return result.value
 
-    return result.getValue();
+    return result.value.getValue()
   }
 }

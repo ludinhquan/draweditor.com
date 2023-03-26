@@ -1,8 +1,7 @@
-import {DomainModel, Result} from "@draweditor.com/core";
+import {DomainModel, left, Result, right} from "@draweditor.com/core";
 import {IDataSource} from "@draweditor.com/dataAccess";
-import {IUser, User} from "./domain";
-import {IUserService} from "./IUserService";
-import {CreateUserDto} from "./userDto";
+import {User} from "./domain";
+import {CreateUserDto, CreateUserResponse, IUserService, UserError} from "./interfaces";
 
 export class UserServiceImpl implements IUserService {
   constructor(
@@ -10,15 +9,7 @@ export class UserServiceImpl implements IUserService {
     private domainModel: DomainModel
   ){}
 
-  getByEmail(email: string): Promise<IUser> {
-    throw new Error('getByEmail missing')
-  }
-
-  getById(id: string): Promise<IUser> {
-    throw new Error('getById missing')
-  }
-
-  async create(createUserDto: CreateUserDto): Promise<Result<IUser>>{
+  async create(createUserDto: CreateUserDto): Promise<CreateUserResponse> {
     const userRepository = await this.dataSource.getRepository();
     const model = this.domainModel.getModel('user');
 
@@ -27,12 +18,18 @@ export class UserServiceImpl implements IUserService {
       data: createUserDto
     });
 
-    if (userResult.isFailure) return Result.fail(userResult.getError());
+    if (userResult.isFailure) 
+      return left(new UserError.ValidationError(userResult.getError()));
 
-    const user = userResult.getValue() as unknown as IUser;
+    const user = userResult.getValue();
 
-    await userRepository.create(user);
+    const oldUser = await userRepository.findUnique(user);
+    const existed = !!oldUser
+    if(!!existed) 
+      return left(new UserError.UserAlreadyExisted(`User existed`))
 
-    return Result.ok(user);
+    const data = await userRepository.create<User>(user);
+
+    return right(Result.ok(data.getValue()));
   }
 }

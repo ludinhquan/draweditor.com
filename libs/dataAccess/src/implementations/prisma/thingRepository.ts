@@ -1,9 +1,22 @@
-import {EntityData, Result, UUIDEntityId} from "@draweditor.com/core";
+import {EntityData, Result} from "@draweditor.com/core";
 import {PrismaClient} from "@prisma/client";
-import { FindManyArgs, FindManyResult, IRepository } from "../../IRepository";
+import {FindManyArgs, FindManyResult, IRepository} from "../../IRepository";
 
 export class ThingRepository implements IRepository {
   constructor(private prismaClient: PrismaClient){}
+
+  async findUnique<T extends EntityData>(entityData: T): Promise<T['data']> {
+    const {uniqueData, model} = entityData;
+
+    const findResult = await this.prismaClient[model.key].findFirst({
+      where: {
+        id: {not: {equals: entityData.id.toString()}},
+        OR: uniqueData
+      }
+    });
+
+    return findResult
+  }
 
   findById(entityData: EntityData): Promise<Result<EntityData>> {
     throw new Error('Please implements findById method')
@@ -13,11 +26,11 @@ export class ThingRepository implements IRepository {
     throw new Error('Please implements findMany method')
   }
 
-  async create(entityData: EntityData): Promise<Result<any>> {
+  async create<T extends EntityData>(entityData: T): Promise<Result<T['data']>> {
     const {data, model} = entityData;
     
-    const newData = await this.prismaClient[model.key].create({data});
-    return Result.ok(newData);
+    await this.prismaClient[model.key].create({data});
+    return Result.ok(data);
   }
 
   update(entityData: EntityData): Promise<Result<EntityData>> {

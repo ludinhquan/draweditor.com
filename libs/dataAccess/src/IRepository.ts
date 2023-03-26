@@ -29,11 +29,13 @@ export type FindManyResult = {
 }
 
 export interface IRepository {
+  findUnique<T extends EntityData>(entityData: EntityData): Promise<T['data']>
+
   findById(entityData: EntityData): Promise<Result<EntityData>>
 
   findMany(args: FindManyArgs): Promise<FindManyResult>
 
-  create(entityData: any): Promise<Result<EntityData>>
+  create<T extends EntityData>(entityData: T): Promise<Result<T['data']>>
 
   update(entityData: EntityData): Promise<Result<EntityData>>
 

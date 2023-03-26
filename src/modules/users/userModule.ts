@@ -1,7 +1,7 @@
 import {DomainModel} from "@draweditor.com/core";
 import {DataSource, IDataSource} from "@draweditor.com/dataAccess";
 import {Module} from "@nestjs/common";
-import {UserService} from "./IUserService";
+import {UserService} from "./interfaces";
 import {UserServiceImpl} from "./userServiceImpl";
 
 @Module({

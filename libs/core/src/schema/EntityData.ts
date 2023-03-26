@@ -11,7 +11,7 @@ export enum EntityAction {
   Connect = 'connect',
 }
 
-type Data<T = unknown> = Partial<{id: string}> & T
+type Data<T = unknown> = {id: string} & T
 
 type CreateProp = {
   model: DataModel,
@@ -39,6 +39,15 @@ export abstract class EntityData<T = unknown> extends Entity<EntityDataProp<T>>{
   get model() {return this.props.model}
 
   get data() {return {...this.props.data, id: this.id.toString()}}
+
+  get uniqueData() {
+    const {uniques} = this.model
+
+    const values = uniques
+      .map(key => Array.isArray(key) ? pick(this.data, key) : pick(this.data, [key]),)
+
+    return values
+  }
 
   constructor(props: EntityDataProp, id: UniqueEntityId, action: Options['action']) {
     super(props, id)

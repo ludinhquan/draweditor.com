@@ -1,3 +1,3 @@
 export * from './domain'
-export * from './IUserService'
+export * from './interfaces'
 export * from './userModule'

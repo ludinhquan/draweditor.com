@@ -1,14 +1,19 @@
-import {IUserService} from "@/modules/users";
-import {Result} from "@draweditor.com/core";
+import {CreateUserResponse, IUser, IUserService} from "@/modules/users";
+import {Either, InternalServerError, Result} from "@draweditor.com/core";
 import {RegisterDto} from "./authenticationDto";
 import {Password} from "./domain/password";
+
+type RegistrationResponse = Either<
+  InternalServerError,
+  Result<Partial<IUser>>
+> | CreateUserResponse;
 
 export class AuthenticationService {
   constructor(
     private userService: IUserService
   ) {}
 
-  async register(registerDto: RegisterDto) {
+  async register(registerDto: RegisterDto): Promise<RegistrationResponse> {
     const hashedPassword = await Password.hash(registerDto.password);
 
     const createResult = await this.userService.create({
@@ -17,8 +22,6 @@ export class AuthenticationService {
       password: hashedPassword
     });
 
-    if (createResult.isFailure) return createResult
-
-    return Result.ok(createResult.getValue())
+    return createResult
   }
 }
