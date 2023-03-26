@@ -18,9 +18,10 @@ export class HttpInterceptor implements NestInterceptor {
 
     
   getClient(request: Request) {
+    const requestId = v4();
     const {ip, originalUrl} = request;
     const userAgent = request.get('user-agent') || '';
-    return [decodeURIComponent(originalUrl), userAgent, ip].join(' ');
+    return [decodeURIComponent(originalUrl), requestId, userAgent, ip].join(' ');
   }
 
   intercept(context: ExecutionContext, handler: CallHandler): Observable<any> {
@@ -31,13 +32,12 @@ export class HttpInterceptor implements NestInterceptor {
     const last = performance.now();
 
     const {method, params, body, query, user} = request;
-    const requestId = v4();
 
     const client = this.getClient(request);
-    const userInfo = {user}
+    const userInfo = pick(user, ['id', 'name','email'])
 
     this.logger.log(
-      `[REQUEST][${requestId}] [${method}] ${client} ${JSON.stringify(
+      `[REQUEST][${method}] ${client} ${JSON.stringify(
         removeEmptyProps({...userInfo, params, query, body}, [undefined]),
       )}`,
     );
@@ -49,7 +49,7 @@ export class HttpInterceptor implements NestInterceptor {
       let log = this.logger.log.bind(this.logger);
       if (statusCode >= 400) log = this.logger.error.bind(this.logger);
 
-      log(`[RESPONSE][${requestId}] [${method}] ${client} status:${statusCode}, length: ${contentLength ?? 0}, duration: ${performance.now() - last}ms`);
+      log(`[RESPONSE][${method}] ${client} status:${statusCode}, length: ${contentLength ?? 0}, duration: ${performance.now() - last}ms`);
     });
 
     return handler.handle().pipe(
