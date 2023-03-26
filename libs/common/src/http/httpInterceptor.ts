@@ -2,9 +2,7 @@ import {CustomError, pick, removeEmptyProps} from '@draweditor.com/core';
 import {NestLogger} from '@draweditor.com/logger';
 import {
   CallHandler,
-  ExecutionContext,
-  HttpException,
-  Injectable,
+  ExecutionContext, Injectable,
   NestInterceptor
 } from '@nestjs/common';
 import {Request, Response} from 'express';
@@ -15,7 +13,6 @@ import {v4} from 'uuid';
 @Injectable()
 export class HttpInterceptor implements NestInterceptor {
   private logger = new NestLogger(this.constructor.name);
-
     
   getClient(request: Request) {
     const requestId = v4();

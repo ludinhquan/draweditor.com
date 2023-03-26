@@ -1,2 +1,1 @@
-export * from './httpExceptionFilter'
-export * from './httpInterceptor'
+export * from './httpDecorator'

@@ -1,3 +1,4 @@
+import {Http} from "@draweditor.com/common";
 import {omit} from "@draweditor.com/core";
 import {Body, Controller, Post, Req, UseGuards} from "@nestjs/common";
 import {Request} from "express";
@@ -12,6 +13,7 @@ type RegisterDto = {
   phoneNumber: string
 }
 
+@Http()
 @Controller('authentication')
 export class AuthenticationController {
   constructor(
