@@ -13,3 +13,8 @@ content-type: application/json
   "email": "test@gmail.com",
   "password": "dev1"
 }
+
+GET {{HOST_DEV}}/authentication
+Authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNDM4ZDliYi1mNTgwLTQ0ZGUtOTBmYy0zNTFlMWZkMGU1MjciLCJpYXQiOjE2Nzk5MzM1ODMsImV4cCI6MTY3OTkzNzE4M30.S02OAx9nU7ZA9jzLQVoGb4QSmHDqEZjPAyOwt6xx5oI
+
+

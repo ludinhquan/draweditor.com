@@ -1,12 +1,13 @@
-import {CustomError} from '@draweditor.com/core';
+import {CustomError, HttpError} from '@draweditor.com/core';
 import {NestLogger} from '@draweditor.com/logger';
 import {
   ArgumentsHost, Catch,
-  ExceptionFilter
+  ExceptionFilter,
+  HttpException
 } from '@nestjs/common';
 import {Response} from 'express';
 
-@Catch(CustomError)
+@Catch(HttpException, CustomError)
 export class HttpExceptionFilter implements ExceptionFilter {
   private logger = new NestLogger(this.constructor.name);
 
@@ -14,12 +15,18 @@ export class HttpExceptionFilter implements ExceptionFilter {
     return JSON.stringify(e);
   }
 
-  catch(exception: CustomError, host: ArgumentsHost) {
+  catch(exception: CustomError | HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
     this.logger.error(this.formatMessage(exception));
 
-    response.status(exception.statusCode).json(exception.toJson());
+    let error = exception as CustomError;
+    if (exception instanceof HttpException) {
+      error = new HttpError((exception as HttpException).message, exception.getStatus())
+      this.logger.error(exception.stack)
+    }
+
+    response.status(error.statusCode).json(error.toJson());
   }
 }

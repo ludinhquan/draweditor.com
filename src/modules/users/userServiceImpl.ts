@@ -9,6 +9,18 @@ export class UserServiceImpl implements IUserService {
     private domainModel: DomainModel
   ){}
 
+  async getById(id: string): Promise<IUser> {
+    const userRepository = await this.dataSource.getRepository();
+    const model = this.domainModel.getModel('user');
+
+    const user = await userRepository.findDetail<IUser>({
+      model,
+      where: {id}
+    });
+
+    return user;
+  }
+
   async getByEmail(email: string): Promise<IUser | null> {
     const userRepository = await this.dataSource.getRepository();
     const model = this.domainModel.getModel('user');

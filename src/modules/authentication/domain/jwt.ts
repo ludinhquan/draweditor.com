@@ -1,8 +1,5 @@
 import { JwtService } from "@nestjs/jwt"
-
-type TokenPayload = {
-  userId: string
-}
+import {TokenPayload} from "../interfaces";
 
 type Options = {
   secret: string,

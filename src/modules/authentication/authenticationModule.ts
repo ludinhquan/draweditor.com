@@ -4,7 +4,7 @@ import {ConfigService} from "@nestjs/config";
 import {PassportModule} from "@nestjs/passport";
 import {AuthenticationController} from "./authenticationController";
 import {AuthenticationService} from "./authenticationService";
-import {LocalStrategy} from "./methods";
+import {JwtStrategy, LocalStrategy} from "./methods";
 
 @Module({
   imports: [UserModule, PassportModule],
@@ -13,6 +13,13 @@ import {LocalStrategy} from "./methods";
       provide: AuthenticationService,
       useFactory(...args: [IUserService, ConfigService]) {
         return new AuthenticationService(...args)
+      },
+      inject: [UserService, ConfigService]
+    },
+    {
+      provide: JwtStrategy,
+      useFactory(...args: [IUserService, ConfigService]) {
+        return new JwtStrategy(...args)
       },
       inject: [UserService, ConfigService]
     },
