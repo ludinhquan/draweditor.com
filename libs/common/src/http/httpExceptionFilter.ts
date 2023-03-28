@@ -24,7 +24,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     let error = exception as CustomError;
     if (exception instanceof HttpException) {
       error = new HttpError((exception as HttpException).message, exception.getStatus())
-      this.logger.error(exception.stack)
+      this.logger.error(exception.message)
     }
 
     response.status(error.statusCode).json(error.toJson());

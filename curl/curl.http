@@ -9,6 +9,7 @@ content-type: application/json
 POST {{HOST_DEV}}/authentication/login
 
 POST http://staging.draweditor.com/authentication/login
+POST {{HOST_DEV}}/authentication/login
 content-type: application/json
 
 {
@@ -17,6 +18,6 @@ content-type: application/json
 }
 
 GET {{HOST_DEV}}/authentication
-Authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNDM4ZDliYi1mNTgwLTQ0ZGUtOTBmYy0zNTFlMWZkMGU1MjciLCJpYXQiOjE2Nzk5MzM1ODMsImV4cCI6MTY3OTkzNzE4M30.S02OAx9nU7ZA9jzLQVoGb4QSmHDqEZjPAyOwt6xx5oI
+Authentication: edayJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwZmYxZWRhNS05M2NhLTQ5NmUtOThjZS1mZTgwZWJhZDQyNmMiLCJpYXQiOjE2Nzk5OTE1NjgsImV4cCI6MTY3OTk5NTE2OH0.VWZ4qO-bCIMdHzFZ-HXoOkTBRw-EG98zpviH_yeT5fQ
 
 
