@@ -37,7 +37,7 @@ spec:
               cpu: 300m
           env:
             - name: MONGODB_URL
-              value: "mongodb://root:root@mongodb-headless.staging-system:27017/staging?authSource=admin"
+              value: "mongodb://root:root@mongodb-0-external.staging-system:27017/staging?authSource=admin"
             - name: JWT_ACCESS_TOKEN_SECRET
               value: "dev@abc"
             - name: JWT_ACCESS_TOKEN_EXPIRATION_TIME
