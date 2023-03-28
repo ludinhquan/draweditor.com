@@ -23,6 +23,8 @@ RUN yarn build
 # Runtime image
 FROM base AS runtime
 
-COPY --from=build /app/dist /app
+COPY --from=build /app/dist /app/dist
 
-CMD ["node", "src/main"]
+RUN yarn generate:client
+
+CMD ["node", "dist/src/main"]

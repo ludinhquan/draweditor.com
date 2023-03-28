@@ -35,6 +35,13 @@ spec:
             limits:
               memory: 128Mi
               cpu: 300m
+          env:
+            - name: MONGODB_URL
+              value: "mongodb://root:root@mongodb-headless.staging-system:27017/staging?authSource=admin"
+            - name: JWT_ACCESS_TOKEN_SECRET
+              value: "dev@abc"
+            - name: JWT_ACCESS_TOKEN_EXPIRATION_TIME
+              value: "900"
 ---
 apiVersion: v1
 kind: Service

@@ -9,7 +9,7 @@ spec:
     - host: ${NS}.draweditor.com
       http:
         paths:
-          - path: /ping
+          - path: /
             pathType: Prefix
             backend:
               service:

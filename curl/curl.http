@@ -3,15 +3,17 @@ content-type: application/json
 
 {
   "email": "test@gmail.com",
-  "password": "dev1"
+  "password": "dev"
 }
 
 POST {{HOST_DEV}}/authentication/login
+
+POST http://staging.draweditor.com/authentication/login
 content-type: application/json
 
 {
   "email": "test@gmail.com",
-  "password": "dev1"
+  "password": "dev"
 }
 
 GET {{HOST_DEV}}/authentication
