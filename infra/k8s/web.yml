@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-service 
+  namespace: ${NS}
+  labels:
+    app: web-service 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-service 
+  template:
+    metadata:
+      labels:
+        app: web-service 
+    spec:
+      containers:
+        - name: web-service 
+          image: io.web.health:latest
+          imagePullPolicy: Never
+          ports:
+            - name: http
+              containerPort: 4000 
+          resources:
+            requests:
+              memory: 64Mi
+              cpu: 100m
+            limits:
+              memory: 128Mi
+              cpu: 300m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service 
+  namespace: ${NS}
+spec:
+  selector:
+    app: web-service 
+  ports:
+    - protocol: TCP
+      port: 4000 

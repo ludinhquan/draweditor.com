@@ -9,7 +9,7 @@ content-type: application/json
 
 POST {{HOST_DEV}}/authentication/login
 
-POST http://staging.draweditor.com/authentication/login
+POST http://staging.draweditor.com/api/authentication/login
 content-type: application/json
 
 {
@@ -18,5 +18,8 @@ content-type: application/json
 }
 
 GET {{HOST_DEV}}/authentication
-POST http://staging.draweditor.com/authentication/login
+
+GET http://staging.draweditor.com/web
+
+GET http://staging.draweditor.com/api/authentication
 Authentication: edayJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwZmYxZWRhNS05M2NhLTQ5NmUtOThjZS1mZTgwZWJhZDQyNmMiLCJpYXQiOjE2Nzk5OTE1NjgsImV4cCI6MTY3OTk5NTE2OH0.VWZ4qO-bCIMdHzFZ-HXoOkTBRw-EG98zpviH_yeT5fQ

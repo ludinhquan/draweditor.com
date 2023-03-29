@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: api-service
-          image: draweditor:latest
+          image: io.api.health:latest
           imagePullPolicy: Never
           ports:
             - name: http
