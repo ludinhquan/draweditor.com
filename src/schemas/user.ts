@@ -9,7 +9,6 @@ export const user: DataModelProp = {
       key: "email",
       name: "Email",
       type: AttributeType.String,
-      rules: {required: true},
     },
     {
       key: "name",
@@ -20,10 +19,16 @@ export const user: DataModelProp = {
       key: "password",
       name: "Password",
       type: AttributeType.String,
-      rules: {min: 8}
+    },
+    {
+      key: "phoneNumber",
+      name: "Phone Number",
+      type: AttributeType.String,
+      rules: {required: true}
     },
   ],
   uniques: [
-    ['email']
+    ['email'],
+    ['phoneNumber']
   ]
 };

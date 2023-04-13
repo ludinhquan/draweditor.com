@@ -3,3 +3,7 @@ export class RegisterDto {
   email: string
   password: string
 }
+
+export class SignInDto {
+  phoneNumber: string
+}

@@ -13,12 +13,27 @@ type RegisterDto = {
   phoneNumber: string
 }
 
+type SignInDto = {
+  phoneNumber: string
+}
+
 @Http()
 @Controller('authentication')
 export class AuthenticationController {
   constructor(
     private authenticationService: AuthenticationService
   ){}
+
+  @Post('signin')
+  async signIn(
+    @Body() dto: SignInDto
+  ){
+    const result = await this.authenticationService.signIn(dto);
+    return result
+    // if (result.isLeft()) return result.value
+    //
+    // return result.value.getValue()
+  }
 
   @Post('register')
   async register(@Body() registrationData: RegisterDto) {

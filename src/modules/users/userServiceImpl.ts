@@ -21,6 +21,18 @@ export class UserServiceImpl implements IUserService {
     return user;
   }
 
+  async getByPhoneNumber(phoneNumber: string): Promise<IUser | null> {
+    const userRepository = await this.dataSource.getRepository();
+    const model = this.domainModel.getModel('user');
+
+    const user = await userRepository.findDetail<IUser>({
+      model,
+      where: {phoneNumber}
+    });
+
+    return user;
+  }
+
   async getByEmail(email: string): Promise<IUser | null> {
     const userRepository = await this.dataSource.getRepository();
     const model = this.domainModel.getModel('user');
@@ -42,7 +54,7 @@ export class UserServiceImpl implements IUserService {
       data: createUserDto
     });
 
-    if (userResult.isFailure) 
+    if (userResult.isFailure)
       return left(new UserError.ValidationError(userResult.getError()));
 
     const user = userResult.getValue();

@@ -1,9 +1,10 @@
-import {CustomError, HttpError} from '@draweditor.com/core';
+import {CustomError, HttpError, UnauthorizedError} from '@draweditor.com/core';
 import {NestLogger} from '@draweditor.com/logger';
 import {
   ArgumentsHost, Catch,
   ExceptionFilter,
-  HttpException
+  HttpException,
+  UnauthorizedException
 } from '@nestjs/common';
 import {Response} from 'express';
 
@@ -19,13 +20,17 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
-    this.logger.error(this.formatMessage(exception));
-
-    let error = exception as CustomError;
-    if (exception instanceof HttpException) {
-      error = new HttpError((exception as HttpException).message, exception.getStatus())
-      this.logger.error(exception.stack)
+    let error: CustomError;
+    switch (true) {
+      case exception instanceof UnauthorizedException:
+        error = new UnauthorizedError(exception.message)
+        break;
+      default:
+        this.logger.warn(`Please implements error for ${exception.name}`)
+        error = new HttpError(exception.message, (exception as HttpException).getStatus());
     }
+
+    this.logger.error(this.formatMessage(error.toJson()));
 
     response.status(error.statusCode).json(error.toJson());
   }

@@ -1,15 +1,17 @@
-import {AuthenticationModule, UserModule} from '@/modules';
+import {AuthenticationModule, EmailModule, SmsModule, UserModule} from '@/modules';
+import * as modelProps from '@/schemas';
 import {Inject, Module, OnApplicationBootstrap, OnApplicationShutdown} from '@nestjs/common';
 import {AppServiceImpl} from './appService';
 import {CommonModule, DomainModelModule} from './common';
 import {AppService, IAppService} from './IAppService';
 import {PingController} from './pingController';
-import * as modelProps from '@/schemas'
 
 @Module({
   imports: [
     DomainModelModule.register(Object.values(modelProps)),
     CommonModule,
+    EmailModule,
+    SmsModule,
     UserModule,
     AuthenticationModule,
   ],

@@ -1,10 +1,9 @@
 import {CreateUserResponse, IUser, IUserService} from "@/modules/users";
 import {Either, InternalServerError, Result} from "@draweditor.com/core";
-import {RegisterDto} from "./authenticationDto";
+import {ConfigService} from "@nestjs/config";
+import {RegisterDto, SignInDto} from "./authenticationDto";
 import {Jwt, Password} from "./domain";
 import {TokenPayload} from "./interfaces";
-import { JwtService } from "@nestjs/jwt";
-import {ConfigService} from "@nestjs/config";
 
 type RegistrationResponse = Either<
   InternalServerError,
@@ -17,6 +16,15 @@ export class AuthenticationService {
     private userService: IUserService,
     private configService: ConfigService,
   ) {}
+
+  async signIn(dto: SignInDto): Promise<void> {
+    const user = await this.userService.getByPhoneNumber(dto.phoneNumber);
+
+    if(!user) {}
+    // console.log(user)
+
+    // const user = 
+  }
 
   async register(registerDto: RegisterDto): Promise<RegistrationResponse> {
     const hashedPassword = await Password.hash(registerDto.password);
