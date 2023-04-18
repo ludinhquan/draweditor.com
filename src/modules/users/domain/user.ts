@@ -6,6 +6,8 @@ export interface IUser {
   email: string
   password: string
   phoneNumber: string
+  secret: string
+  counter: string
 }
 
 export type UserProp = Partial<IUser>

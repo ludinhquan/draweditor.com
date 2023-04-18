@@ -21,7 +21,7 @@ export class UserServiceImpl implements IUserService {
     return user;
   }
 
-  async getByPhoneNumber(phoneNumber: string): Promise<IUser | null> {
+  async getByPhoneNumber(phoneNumber: string): Promise<Result<IUser>> {
     const userRepository = await this.dataSource.getRepository();
     const model = this.domainModel.getModel('user');
 
@@ -30,7 +30,9 @@ export class UserServiceImpl implements IUserService {
       where: {phoneNumber}
     });
 
-    return user;
+    if (!user) return Result.fail(`Can't find user by phone number ${phoneNumber}`);
+
+    return Result.ok(user);
   }
 
   async getByEmail(email: string): Promise<IUser | null> {
@@ -62,7 +64,7 @@ export class UserServiceImpl implements IUserService {
     const oldUser = await userRepository.findUnique(user);
     const existed = !!oldUser
     if (!!existed)
-      return left(new UserError.UserAlreadyExists(`User with email ${createUserDto.email} already exists`))
+      return left(new UserError.UserAlreadyExists(`User with phone number ${createUserDto.phoneNumber} already exists`))
 
     const data = await userRepository.create<User>(user);
 

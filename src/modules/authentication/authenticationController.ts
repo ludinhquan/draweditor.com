@@ -30,17 +30,6 @@ export class AuthenticationController {
   ){
     const result = await this.authenticationService.signIn(dto);
     return result
-    // if (result.isLeft()) return result.value
-    //
-    // return result.value.getValue()
-  }
-
-  @Post('register')
-  async register(@Body() registrationData: RegisterDto) {
-    const result = await this.authenticationService.register(registrationData);
-    if (result.isLeft()) return result.value
-
-    return result.value.getValue()
   }
 
   @Post('login')

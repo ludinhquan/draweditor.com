@@ -1,28 +1,31 @@
-import { totp } from "otplib"
+import {hotp, authenticator} from "otplib";
 
-type GenerateOptions = {
-  secret: string
+export const OtpService = Symbol('OtpService')
+
+export interface IOtpService {
+  generateSecret(): string
+  generate(secret: string, counter: number): string
+  verify(token: string, secret: string, counter: number): boolean
 }
 
-interface IOtpService {
-  generate(options: GenerateOptions): string
-  verify(otp: string, secret: string): boolean
-}
-
-export class OtpService implements IOtpService {
+export class OtpServiceImpl implements IOtpService {
   private readonly OTP_DIGITS = 6;
 
   constructor() {
-    totp.options = {
+    hotp.options = {
       digits: this.OTP_DIGITS,
     }
   }
 
-  generate(options: GenerateOptions) {
-    return totp.generate(options.secret)
+  public generateSecret() {
+    return authenticator.generateSecret();
   }
 
-  verify(otp: string, secret: string) {
-    return true
+  public generate(secret: string, counter: number): string {
+    return hotp.generate(secret, counter);
+  }
+
+  public verify(token: string, secret: string, counter: number): boolean {
+    return hotp.check(token, secret, counter)
   }
 }

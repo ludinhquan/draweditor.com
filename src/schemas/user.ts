@@ -26,6 +26,26 @@ export const user: DataModelProp = {
       type: AttributeType.String,
       rules: {required: true}
     },
+    {
+      key: "secret",
+      name: "Otp Secret",
+      type: AttributeType.String
+    },
+    {
+      key: "otp",
+      name: "Otp Code",
+      type: AttributeType.String,
+    },
+    {
+      key: "counter",
+      name: "Otp Counter",
+      type: AttributeType.Number,
+    },
+    {
+      key: "otpExpiryTime",
+      name: "Otp Expiry Time",
+      type: AttributeType.Number,
+    },
   ],
   uniques: [
     ['email'],

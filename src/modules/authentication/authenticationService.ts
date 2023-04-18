@@ -1,41 +1,29 @@
-import {CreateUserResponse, IUser, IUserService} from "@/modules/users";
-import {Either, InternalServerError, Result} from "@draweditor.com/core";
+import {IUser, IUserService} from "@/modules/users";
+import {IOtpService} from "@/services/otp";
+import {Result} from "@draweditor.com/core";
 import {ConfigService} from "@nestjs/config";
-import {RegisterDto, SignInDto} from "./authenticationDto";
+import {SignInDto} from "./authenticationDto";
 import {Jwt, Password} from "./domain";
 import {TokenPayload} from "./interfaces";
-
-type RegistrationResponse = Either<
-  InternalServerError,
-  Result<Partial<IUser>>
-> | CreateUserResponse;
-
 
 export class AuthenticationService {
   constructor(
     private userService: IUserService,
     private configService: ConfigService,
+    private otpService: IOtpService,
   ) {}
 
   async signIn(dto: SignInDto): Promise<void> {
-    const user = await this.userService.getByPhoneNumber(dto.phoneNumber);
+    const userResult = await this.userService.getByPhoneNumber(dto.phoneNumber);
 
-    if(!user) {}
-    // console.log(user)
+    if (userResult.isFailure) {
+      const createResult = await this.userService.create({phoneNumber: dto.phoneNumber});
+    }
 
-    // const user = 
-  }
+    const secret = this.otpService.generateSecret();
+    const counter = 0;
 
-  async register(registerDto: RegisterDto): Promise<RegistrationResponse> {
-    const hashedPassword = await Password.hash(registerDto.password);
-
-    const createResult = await this.userService.create({
-      name: registerDto.name,
-      email: registerDto.email,
-      password: hashedPassword
-    });
-
-    return createResult
+    // user.secret = secret;
   }
 
   async getAuthenticatedUser(email: string, password: string): Promise<Result<IUser>> {
