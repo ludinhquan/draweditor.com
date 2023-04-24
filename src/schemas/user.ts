@@ -45,6 +45,7 @@ export const user: DataModelProp = {
       key: "isSetupProfile",
       name: "Flag to verify profile is set up",
       type: AttributeType.Boolean,
+      default: false
     }
   ],
   uniques: [

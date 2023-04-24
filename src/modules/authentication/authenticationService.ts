@@ -19,10 +19,18 @@ export class AuthenticationService {
   async signIn(dto: SignInDto): Promise<void> {
     let user = await this.userService.getByPhoneNumber(dto.phoneNumber);
 
-    if (!user) {}
+    if (!user) {
+      user = await this.userService.createUser({
+        phoneNumber: dto.phoneNumber,
+        counter: 0,
+        secret: this.otpService.generateSecret()
+      })
+    }
 
     const counter = user.counter ?? 0;
     const secret = user.secret;
+
+    console.log(counter, secret)
     const otp = this.otpService.generate(secret, counter);
 
     console.log({counter, secret, otp})

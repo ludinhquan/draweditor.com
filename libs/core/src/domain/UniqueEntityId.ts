@@ -19,6 +19,10 @@ export class UUIDEntityId implements UniqueEntityId {
     return this.#value;
   }
 
+  public static generate() {
+    return uuidv4()
+  }
+
   public equals(id: UniqueEntityId): boolean {
     if (!(id instanceof UUIDEntityId)) {
       return false;

@@ -1,7 +1,7 @@
-import {DomainModel} from "@draweditor.com/core";
+import {DomainModel, UUIDEntityId} from "@draweditor.com/core";
 import {IDataSource} from "@draweditor.com/dataAccess";
 import {IUser} from "./domain";
-import {IUserService, TOtpDTO} from "./interfaces";
+import {CreateUserDto, IUserService, TOtpDTO} from "./interfaces";
 
 export class UserServiceImpl implements IUserService {
   constructor(
@@ -68,6 +68,23 @@ export class UserServiceImpl implements IUserService {
   //
   //   return right(Result.ok(data.getValue()));
   // }
+
+  async createUser(dto: CreateUserDto): Promise<IUser> {
+    const client = await this.dataSource.getClient();
+
+    const result = await client['user'].create({
+      data: {
+        id: UUIDEntityId.generate(),
+        phoneNumber: dto.phoneNumber,
+        counter: dto.counter,
+        secret: dto.secret,
+        isSetupProfile: false,
+      }
+    });
+
+    console.log(result)
+    return result
+  }
 
   async setOtp(userId: string, otpDto: TOtpDTO): Promise<boolean> {
     const client = await this.dataSource.getClient();

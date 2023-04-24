@@ -1,4 +1,5 @@
 import {IUser} from "../domain"
+import {CreateUserDto} from "./IUserDto"
 
 export const UserService = Symbol('UserService')
 
@@ -13,5 +14,6 @@ export interface IUserService {
   getByEmail(email: string): Promise<IUser>
   getByPhoneNumber(phoneNumber: string): Promise<IUser>
   // createUser(createUserDto: CreateUserDto): Promise<CreateUserResponse>
+  createUser(dto: CreateUserDto): Promise<IUser>
   setOtp(userId: string, otp: Partial<TOtpDTO>): Promise<boolean>
 }
