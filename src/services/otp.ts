@@ -1,4 +1,5 @@
 import {hotp, authenticator} from "otplib";
+import {HashAlgorithms} from "@otplib/core";
 
 export const OtpService = Symbol('OtpService')
 
@@ -14,6 +15,7 @@ export class OtpServiceImpl implements IOtpService {
   constructor() {
     hotp.options = {
       digits: this.OTP_DIGITS,
+      algorithm: HashAlgorithms.SHA512
     }
   }
 

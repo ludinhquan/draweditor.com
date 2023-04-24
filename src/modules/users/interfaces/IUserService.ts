@@ -3,9 +3,9 @@ import {IUser} from "../domain"
 export const UserService = Symbol('UserService')
 
 export type TOtpDTO = {
-  otp: string,
   secret: string
   counter: number
+  otpExpiredTime: Date
 }
 
 export interface IUserService {

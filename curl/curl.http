@@ -10,7 +10,7 @@ content-type: application/json
 
 {
   "phoneNumber": "+84967397077",
-  "otp": "772527"
+  "otp": "783400"
 }
 
 POST {{HOST_DEV}}/sms/initiate-verification

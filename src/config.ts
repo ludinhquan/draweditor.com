@@ -7,4 +7,6 @@ export const configs = {
 
   TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
   TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
+
+  OTP_MESSAGE: process.env.OTP_MESSAGE ?? 'Your verification code is {otp}'
 }

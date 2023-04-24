@@ -1,3 +1,4 @@
+import {configs} from "@/config";
 import {IUser, IUserService} from "@/modules/users";
 import {IOtpService} from "@/services/otp";
 import {Result} from "@draweditor.com/core";
@@ -21,11 +22,14 @@ export class AuthenticationService {
     if (!user) {}
 
     const counter = user.counter ?? 0;
-    const secret = this.otpService.generateSecret();
+    const secret = user.secret;
     const otp = this.otpService.generate(secret, counter);
 
-    await this.smsService.sendSms(user.phoneNumber, `Your verification code is ${otp}`)
-    await this.userService.setOtp(user.id, {otp, secret, counter});
+    console.log({counter, secret, otp})
+    await this.userService.setOtp(user.id, {secret, counter});
+
+    console.log(configs.OTP_MESSAGE.replace('{otp}', otp))
+    // this.smsService.sendSms(user.phoneNumber, configs.OTP_MESSAGE.replace('{otp}', otp));
   }
 
   async verifyOtpCode(dto: {phoneNumber: string, otp: string}) {
@@ -35,7 +39,9 @@ export class AuthenticationService {
 
     if (isValidOtp) await this.userService.setOtp(user.id, {counter: user.counter + 1});
 
-    console.log({isValidOtp});
+    const accessToken = this.getCookieWithJwtAccessToken(user);
+
+    console.log({isValidOtp, accessToken});
   }
 
   async getAuthenticatedUser(email: string, password: string): Promise<Result<IUser>> {
@@ -52,27 +58,10 @@ export class AuthenticationService {
   public getCookieWithJwtAccessToken(user: IUser) {
     const payload: TokenPayload = {userId: user.id};
     const token = Jwt.sign(payload, {
-      secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
-      expiresIn: `${this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}s`,
+      secret: configs.JWT_ACCESS_TOKEN_SECRET,
+      expiresIn: `${configs.JWT_ACCESS_TOKEN_EXPIRATION_TIME}s`,
     });
-    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
-      'JWT_ACCESS_TOKEN_EXPIRATION_TIME',
-    )}`;
-  }
-
-  public getCookieWithJwtRefreshToken(user: IUser) {
-    const payload: TokenPayload = {userId: user.id};
-    const token = Jwt.sign(payload, {
-      secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
-      expiresIn: `${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}s`,
-    });
-    const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
-      'JWT_REFRESH_TOKEN_EXPIRATION_TIME',
-    )}`;
-    return {
-      cookie,
-      token,
-    };
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${configs.JWT_ACCESS_TOKEN_EXPIRATION_TIME}`;
   }
 
   public getCookiesForLogOut() {
