@@ -32,11 +32,6 @@ export const user: DataModelProp = {
       type: AttributeType.String
     },
     {
-      key: "otp",
-      name: "Otp Code",
-      type: AttributeType.String,
-    },
-    {
       key: "counter",
       name: "Otp Counter",
       type: AttributeType.Number,
@@ -46,6 +41,11 @@ export const user: DataModelProp = {
       name: "Otp Expiry Time",
       type: AttributeType.Number,
     },
+    {
+      key: "isSetupProfile",
+      name: "Flag to verify profile is set up",
+      type: AttributeType.Boolean,
+    }
   ],
   uniques: [
     ['email'],
