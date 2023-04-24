@@ -2,6 +2,7 @@ import {IUser, IUserService} from "@/modules/users";
 import {IOtpService} from "@/services/otp";
 import {Result} from "@draweditor.com/core";
 import {ConfigService} from "@nestjs/config";
+import {ISmsService} from "../sms/ISmsService";
 import {SignInDto} from "./authenticationDto";
 import {Jwt, Password} from "./domain";
 import {TokenPayload} from "./interfaces";
@@ -11,19 +12,30 @@ export class AuthenticationService {
     private userService: IUserService,
     private configService: ConfigService,
     private otpService: IOtpService,
+    private smsService: ISmsService,
   ) {}
 
   async signIn(dto: SignInDto): Promise<void> {
-    const userResult = await this.userService.getByPhoneNumber(dto.phoneNumber);
+    let user = await this.userService.getByPhoneNumber(dto.phoneNumber);
 
-    if (userResult.isFailure) {
-      const createResult = await this.userService.create({phoneNumber: dto.phoneNumber});
-    }
+    if (!user) {}
 
+    const counter = user.counter ?? 0;
     const secret = this.otpService.generateSecret();
-    const counter = 0;
+    const otp = this.otpService.generate(secret, counter);
 
-    // user.secret = secret;
+    await this.smsService.sendSms(user.phoneNumber, `Your verification code is ${otp}`)
+    await this.userService.setOtp(user.id, {otp, secret, counter});
+  }
+
+  async verifyOtpCode(dto: {phoneNumber: string, otp: string}) {
+    let user = await this.userService.getByPhoneNumber(dto.phoneNumber);
+
+    const isValidOtp = this.otpService.verify(dto.otp, user.secret, user.counter);
+
+    if (isValidOtp) await this.userService.setOtp(user.id, {counter: user.counter + 1});
+
+    console.log({isValidOtp});
   }
 
   async getAuthenticatedUser(email: string, password: string): Promise<Result<IUser>> {

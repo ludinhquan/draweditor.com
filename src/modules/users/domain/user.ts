@@ -7,7 +7,8 @@ export interface IUser {
   password: string
   phoneNumber: string
   secret: string
-  counter: string
+  counter: number
+  otp: string
 }
 
 export type UserProp = Partial<IUser>

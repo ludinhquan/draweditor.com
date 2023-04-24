@@ -5,30 +5,35 @@ import {Request} from "express";
 import {AuthenticationService} from "./authenticationService";
 import {LocalGuard, JwtGuard} from "./methods";
 
-type RegisterDto = {
-  name: string
-  username: string
-  password: string
-  email: string
+type TSignInDto = {
   phoneNumber: string
 }
 
-type SignInDto = {
+type TOtpVerificationDto = {
   phoneNumber: string
+  otp: string
 }
 
 @Http()
-@Controller('authentication')
+@Controller('auth')
 export class AuthenticationController {
   constructor(
     private authenticationService: AuthenticationService
   ){}
 
-  @Post('signin')
+  @Post('otp/sms')
   async signIn(
-    @Body() dto: SignInDto
-  ){
+    @Body() dto: TSignInDto
+  ) {
     const result = await this.authenticationService.signIn(dto);
+    return result
+  }
+
+  @Post('otp/sms/verification')
+  async verifyOtpCode(
+    @Body() dto: TOtpVerificationDto
+  ) {
+    const result = await this.authenticationService.verifyOtpCode(dto);
     return result
   }
 

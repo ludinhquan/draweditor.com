@@ -1,8 +1,16 @@
-POST {{HOST_DEV}}/authentication/signin
+POST {{HOST_DEV}}/auth/otp/sms
 content-type: application/json
 
 {
   "phoneNumber": "+84967397077"
+}
+
+POST {{HOST_DEV}}/auth/otp/sms/verification
+content-type: application/json
+
+{
+  "phoneNumber": "+84967397077",
+  "otp": "772527"
 }
 
 POST {{HOST_DEV}}/sms/initiate-verification

@@ -1,5 +1,5 @@
 import {mutex} from "@draweditor.com/core";
-import {PrismaClient} from "@prisma/client";
+import {Prisma, PrismaClient} from "@prisma/client";
 import {IDataSource} from "../../IDataSource";
 import {IRepository} from "../../IRepository";
 import {ThingRepository} from "./thingRepository";
@@ -26,5 +26,9 @@ export class DataSourceManagement implements IDataSource {
     this.repository = new ThingRepository(prismaClient)
 
     return this.repository;
+  }
+
+  public getClient(identify?: unknown): Promise<PrismaClient> {
+    return this.getPrismaClient()
   }
 }

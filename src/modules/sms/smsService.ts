@@ -1,22 +1,21 @@
-import {Injectable} from "@nestjs/common";
-import {authenticator, hotp, totp} from 'otplib';
- 
-@Injectable()
-export class SmsService {
+import {ISmsService} from "./ISmsService";
+import * as twilio from "twilio";
+import {configs} from "@/config";
+
+export class TwilioSmsService implements ISmsService {
+  private readonly client: twilio.Twilio
+
   constructor() {
-    // totp.options = {
-    //   step: 10,
-    // }
+    this.client = twilio(configs.TWILIO_ACCOUNT_SID, configs.TWILIO_AUTH_TOKEN)
   }
 
-  async initiateVerification(phoneNumber: string) {
-    const secret = authenticator.generateSecret()
-    const counter = 1;
-    const otp = hotp.generate(secret, counter);
-    const isValid = hotp.check(otp, secret, 1);
+  async sendSms(phoneNumber: string, message: string) {
+    const result = await this.client.messages.create({
+      from: '+16813666737',
+      to: phoneNumber,
+      body: message,
+    });
 
-    console.log({otp, isValid});
+    console.log(result);
   }
-
-  confirmPhoneNumber() {}
 }
